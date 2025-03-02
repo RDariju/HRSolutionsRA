@@ -26,6 +26,10 @@ namespace HRSolutions.Controllers
         {
             return PartialView();
         }
+        public IActionResult viewEmployee()
+        {
+            return PartialView();
+        }
         public IActionResult Privacy()
         {
             return View();
