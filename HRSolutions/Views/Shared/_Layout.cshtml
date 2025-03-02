@@ -284,18 +284,18 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link active">
+                            <a href="#" class="nav-link">
                                 <i class="nav-icon bi bi-speedometer"></i>
                                 <p>
-                                    Dashboard
+                                    HR setup
                                     <i class="nav-arrow bi bi-chevron-right"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="./index.html" class="nav-link active">
+                                    <a href="@Url.Action("newEmployee", "Home")" class="nav-link active">
                                         <i class="nav-icon bi bi-circle"></i>
-                                        <p>Dashboard v1</p>
+                                        <p>Add new Employee</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -391,6 +391,7 @@
             crossorigin="anonymous"></script>
     <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
     <script src="../../dist/js/adminlte.js"></script>
+    <script src="../wwwroot/js/newEmployee.js"></script>
     <!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
     <script>
         const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
