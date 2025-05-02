@@ -1,9 +1,10 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@model HRSolutions.Models.Employee
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
+}   
 <style>
 
 
@@ -148,50 +149,35 @@
         </div>
     </div>
 
-    <form id="employeeForm">
-        <!-- Basic Information -->
-        <div class="form-section">
-            <h3>Basic Information</h3>
-            <div class="form-grid">
-                <select required><option>Title</option></select>
-                <input type="text" placeholder="Initials" required>
-                <input type="text" placeholder="First name" required>
-                <input type="text" placeholder="Middle name">
-                <input type="text" placeholder="Last name" required>
-                <input type="text" placeholder="Preferred name">
-                <input type="date" required>
-                <select required><option>Gender</option></select>
-                <select><option>Marital status</option></select>
-                <select><option>Race</option></select>
-                <select><option>Blood Group</option></select>
-            </div>
-        </div>
+    <form asp-action="NewEmployee" asp-controller="Employee" method="post">
+        <h3>Basic Information</h3>
+        <input asp-for="Title" placeholder="Title" />
+        <input asp-for="Initials" placeholder="Initials" required />
+        <input asp-for="FirstName" placeholder="First name" required />
+        <input asp-for="MiddleName" placeholder="Middle name" />
+        <input asp-for="LastName" placeholder="Last name" required />
+        <input asp-for="PreferredName" placeholder="Preferred name" />
+        <input asp-for="DateOfBirth" type="date" required />
+        <input asp-for="Gender" placeholder="Gender" />
+        <input asp-for="MaritalStatus" placeholder="Marital status" />
+        <input asp-for="Race" placeholder="Race" />
+        <input asp-for="BloodGroup" placeholder="Blood Group" />
 
-        <!-- Identification Information -->
-        <div class="form-section">
-            <h3>Identification Information</h3>
-            <div class="form-row">
-                <input type="text" placeholder="NIC Number" required>
-                <input type="text" placeholder="Passport Number">
-                <input type="date" placeholder="Passport Expiry Date">
-            </div>
-        </div>
+        <h3>Identification Information</h3>
+        <input asp-for="NICNumber" placeholder="NIC Number" required />
+        <input asp-for="PassportNumber" placeholder="Passport Number" />
+        <input asp-for="PassportExpiryDate" type="date" />
 
-        <!-- Contact Information -->
-        <div class="form-section">
-            <h3>Contact Information</h3>
-            <div class="form-grid">
-                <input type="text" placeholder="Street 1">
-                <input type="text" placeholder="Street 2">
-                <input type="text" placeholder="City">
-                <input type="text" placeholder="ZIP code">
-                <input type="text" placeholder="State">
-                <input type="text" placeholder="Country">
-                <input type="text" placeholder="Mobile number" required>
-                <input type="text" placeholder="Land Line">
-                <input type="email" placeholder="Personal Email" required>
-            </div>
-        </div>
+        <h3>Contact Information</h3>
+        <input asp-for="Street1" placeholder="Street 1" />
+        <input asp-for="Street2" placeholder="Street 2" />
+        <input asp-for="City" placeholder="City" />
+        <input asp-for="ZIPCode" placeholder="ZIP Code" />
+        <input asp-for="State" placeholder="State" />
+        <input asp-for="Country" placeholder="Country" />
+        <input asp-for="MobileNumber" placeholder="Mobile Number" required />
+        <input asp-for="LandLine" placeholder="Land Line" />
+        <input asp-for="PersonalEmail" placeholder="Personal Email" type="email" required />
 
         <button type="submit">Save</button>
     </form>
