@@ -1,0 +1,490 @@
+﻿@*
+    Enhanced Attendance Self-Service Page
+*@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Attendance Self-Service";
+}
+
+<div class="attendance-container">
+    <div class="attendance-box">
+        <div class="attendance-logo">
+            <i class="bi bi-calendar-check"></i>
+            <h2>Attendance Self-Service</h2>
+        </div>
+
+        <div class="card main-card">
+            <div class="card-body">
+                <div class="current-time-display">
+                    <div class="date-display">
+                        <span id="current-date">Loading date...</span>
+                    </div>
+                    <div class="time-display">
+                        <span id="current-time">00:00:00</span>
+                        <span id="am-pm">AM</span>
+                    </div>
+                </div>
+
+                <div class="user-info">
+                    <div class="avatar">
+                        <i class="bi bi-person-circle"></i>
+                    </div>
+                    <div class="user-details">
+                        <h4 id="user-name">Welcome, User</h4>
+                        <span class="status-badge" id="status-badge">Not Checked In</span>
+                    </div>
+                </div>
+
+                <div class="status-summary">
+                    <div class="status-item">
+                        <div class="status-label">Today's Status</div>
+                        <div class="status-value" id="todays-status">Not Checked In</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">Check-in Time</div>
+                        <div class="status-value" id="checkin-time">--:--</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">Work Duration</div>
+                        <div class="status-value" id="work-duration">--:--</div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button type="button" id="checkin-btn" class="btn btn-primary action-btn">
+                        <i class="bi bi-box-arrow-in-right"></i> Check In
+                    </button>
+                    <button type="button" id="checkout-btn" class="btn btn-success action-btn" disabled>
+                        <i class="bi bi-box-arrow-left"></i> Check Out
+                    </button>
+                </div>
+
+                <div class="recent-activity">
+                    <h5><i class="bi bi-clock-history"></i> Recent Activity</h5>
+                    <div class="activity-list" id="activity-list">
+                        <!-- Activity items will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            <p>Need help? Contact <a href="mailto:support@example.com">HR Support</a></p>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Custom Styles for Attendance Page */
+    .attendance-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: calc(100vh - 100px);
+        padding: 20px;
+        background-color: #f8f9fa;
+    }
+
+    .attendance-box {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .attendance-logo {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+        .attendance-logo i {
+            font-size: 40px;
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+
+        .attendance-logo h2 {
+            color: #2c3e50;
+            font-weight: 600;
+            margin: 0;
+        }
+
+    .main-card {
+        border-radius: 15px;
+        border: none;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        overflow: hidden;
+    }
+
+    .current-time-display {
+        background: linear-gradient(135deg, #3498db, #2c3e50);
+        margin: -20px -20px 20px;
+        padding: 20px;
+        color: white;
+        text-align: center;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .date-display {
+        font-size: 16px;
+        margin-bottom: 5px;
+        opacity: 0.9;
+    }
+
+    .time-display {
+        font-size: 36px;
+        font-weight: 700;
+        letter-spacing: 2px;
+    }
+
+    #am-pm {
+        font-size: 16px;
+        vertical-align: top;
+        margin-left: 5px;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .avatar {
+        width: 60px;
+        height: 60px;
+        background-color: #e9f2fa;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+    }
+
+        .avatar i {
+            font-size: 30px;
+            color: #3498db;
+        }
+
+    .user-details h4 {
+        margin: 0 0 5px;
+        font-size: 18px;
+        color: #333;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+        background-color: #f1f1f1;
+        color: #777;
+    }
+
+    .checked-in {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .checked-out {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+    .status-summary {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 25px;
+        flex-wrap: wrap;
+    }
+
+    .status-item {
+        flex: 1;
+        min-width: 100px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 12px;
+        text-align: center;
+        margin: 0 5px 10px;
+    }
+
+    .status-label {
+        font-size: 12px;
+        color: #6c757d;
+        margin-bottom: 5px;
+    }
+
+    .status-value {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 25px;
+    }
+
+    .action-btn {
+        flex: 1;
+        padding: 12px;
+        font-weight: 500;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-btn i {
+            margin-right: 5px;
+        }
+
+    .recent-activity {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 15px;
+    }
+
+        .recent-activity h5 {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+            .recent-activity h5 i {
+                margin-right: 5px;
+                color: #3498db;
+            }
+
+    .activity-list {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    .activity-item {
+        display: flex;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+    .activity-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background-color: #e3f2fd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 12px;
+        flex-shrink: 0;
+    }
+
+        .activity-icon i {
+            font-size: 16px;
+            color: #3498db;
+        }
+
+        .activity-icon.check-out {
+            background-color: #e8f5e9;
+        }
+
+            .activity-icon.check-out i {
+                color: #4caf50;
+            }
+
+    .activity-details {
+        flex: 1;
+    }
+
+    .activity-title {
+        font-size: 14px;
+        color: #333;
+        margin-bottom: 2px;
+    }
+
+    .activity-time {
+        font-size: 12px;
+        color: #777;
+    }
+
+    .footer-note {
+        text-align: center;
+        font-size: 14px;
+        color: #777;
+    }
+
+        .footer-note a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+            .footer-note a:hover {
+                text-decoration: underline;
+            }
+
+   
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize variables
+        let checkedIn = false;
+        let checkInTime = null;
+        let checkOutTime = null;
+
+        // DOM elements
+        const currentDateEl = document.getElementById('current-date');
+        const currentTimeEl = document.getElementById('current-time');
+        const amPmEl = document.getElementById('am-pm');
+        const statusBadgeEl = document.getElementById('status-badge');
+        const todaysStatusEl = document.getElementById('todays-status');
+        const checkinTimeEl = document.getElementById('checkin-time');
+        const workDurationEl = document.getElementById('work-duration');
+        const checkinBtn = document.getElementById('checkin-btn');
+        const checkoutBtn = document.getElementById('checkout-btn');
+        const activityListEl = document.getElementById('activity-list');
+
+        // Set user name (replace with dynamic data in production)
+        document.getElementById('user-name').textContent = 'Welcome, John Doe';
+
+        // Update date and time
+        function updateDateTime() {
+            const now = new Date();
+
+            // Update date
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            currentDateEl.textContent = now.toLocaleDateString('en-US', options);
+
+            // Update time
+            let hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const isAm = hours < 12;
+
+            // Convert to 12-hour format
+            if (hours > 12) {
+                hours -= 12;
+            } else if (hours === 0) {
+                hours = 12;
+            }
+
+            currentTimeEl.textContent = `${hours}:${minutes}:${seconds}`;
+            amPmEl.textContent = isAm ? 'AM' : 'PM';
+
+            // Update work duration if checked in
+            if (checkedIn && checkInTime && !checkOutTime) {
+                const durationMs = now - checkInTime;
+                const durationHours = Math.floor(durationMs / (1000 * 60 * 60));
+                const durationMinutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
+                workDurationEl.textContent = `${durationHours}h ${durationMinutes}m`;
+            }
+        }
+
+        // Initialize date and time
+        updateDateTime();
+
+        // Update time every second
+        setInterval(updateDateTime, 1000);
+
+        // Check-in function
+        function checkIn() {
+            checkInTime = new Date();
+            checkedIn = true;
+
+            // Update UI
+            statusBadgeEl.textContent = 'Checked In';
+            statusBadgeEl.classList.add('checked-in');
+            todaysStatusEl.textContent = 'Checked In';
+
+            // Format time for display
+            const hours = checkInTime.getHours();
+            const minutes = checkInTime.getMinutes().toString().padStart(2, '0');
+            const amPm = hours >= 12 ? 'PM' : 'AM';
+            const displayHours = hours % 12 || 12;
+
+            checkinTimeEl.textContent = `${displayHours}:${minutes} ${amPm}`;
+
+            // Toggle buttons
+            checkinBtn.disabled = true;
+            checkoutBtn.disabled = false;
+
+            // Add to activity
+            addActivityItem('check-in', 'Checked in');
+        }
+
+        // Check-out function
+        function checkOut() {
+            checkOutTime = new Date();
+            checkedIn = false;
+
+            // Update UI
+            statusBadgeEl.textContent = 'Checked Out';
+            statusBadgeEl.classList.remove('checked-in');
+            statusBadgeEl.classList.add('checked-out');
+            todaysStatusEl.textContent = 'Checked Out';
+
+            // Calculate duration
+            const durationMs = checkOutTime - checkInTime;
+            const durationHours = Math.floor(durationMs / (1000 * 60 * 60));
+            const durationMinutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
+
+            workDurationEl.textContent = `${durationHours}h ${durationMinutes}m`;
+
+            // Toggle buttons
+            checkoutBtn.disabled = true;
+
+            // Add to activity
+            addActivityItem('check-out', 'Checked out');
+        }
+
+        // Add activity item
+        function addActivityItem(type, text) {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const amPm = hours >= 12 ? 'PM' : 'AM';
+            const displayHours = hours % 12 || 12;
+
+            const timeString = `${displayHours}:${minutes} ${amPm}`;
+
+            const activityItem = document.createElement('div');
+            activityItem.className = 'activity-item';
+
+            const iconClass = type === 'check-in' ? '' : 'check-out';
+            const iconType = type === 'check-in' ? 'box-arrow-in-right' : 'box-arrow-left';
+
+            activityItem.innerHTML = `
+                <div class="activity-icon ${iconClass}">
+                    <i class="bi bi-${iconType}"></i>
+                </div>
+                <div class="activity-details">
+                    <div class="activity-title">${text}</div>
+                    <div class="activity-time">${timeString} - ${now.toLocaleDateString()}</div>
+                </div>
+            `;
+
+            // Add to beginning of list
+            activityListEl.insertBefore(activityItem, activityListEl.firstChild);
+        }
+
+        // Button event listeners
+        checkinBtn.addEventListener('click', checkIn);
+        checkoutBtn.addEventListener('click', checkOut);
+
+        // Add some sample activity items (remove in production)
+        setTimeout(() => {
+            addActivityItem('check-out', 'Checked out');
+            addActivityItem('check-in', 'Checked in');
+        }, 500);
+    });
+</script>

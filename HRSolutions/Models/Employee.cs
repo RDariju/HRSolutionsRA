@@ -7,7 +7,7 @@ namespace HRSolutions.Models
     public class Employee
     {
         [Key]
-        public int Id { get; set; }
+        public int empId { get; set; }
 
         public string Title { get; set; }
         public string Initials { get; set; }
@@ -34,5 +34,8 @@ namespace HRSolutions.Models
         public string MobileNumber { get; set; }
         public string LandLine { get; set; }
         public string PersonalEmail { get; set; }
+        public string JobRole { get; set; }
+
+        public byte[]? ProfileImage { get; set; }
     }
 }
