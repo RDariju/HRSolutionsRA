@@ -1,0 +1,324 @@
+﻿@model HRSolutions.Models.Employee
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var maxDateOfBirth = DateTime.Now.AddYears(-16).ToString("yyyy-MM-dd");
+}
+<!-- Styles preserved (unchanged) -->
+<style>
+    .form-container {
+        display: flex;
+        gap: 20px;
+        padding: 20px;
+        background-color: #f6f6f6;
+        border-radius: 10px;
+        font-family: 'Segoe UI', sans-serif;
+        flex-direction: column;
+    }
+
+    .left-panel {
+        width: 100%;
+        align-items: flex-start;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .profile-picture-container {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 2px dashed #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        position: relative;
+        background-color: #fff;
+        cursor: pointer;
+    }
+
+        .profile-picture-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .profile-picture-container input {
+            opacity: 0;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+    .upload-text {
+        font-size: 24px;
+        color: #888;
+        position: absolute;
+    }
+
+    .form-section {
+        background: #e0e0e0;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .right-panel {
+        flex-grow: 1;
+    }
+
+    h2 {
+        margin-bottom: 20px;
+    }
+
+    h3 {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+    }
+
+    input, select {
+        padding: 6px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        margin-top: 15px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+        button:hover {
+            background-color: #45a049;
+        }
+</style>
+
+<h2>Add new employee</h2>
+
+<form asp-action="NewEmployee" asp-controller="Employee" method="post" enctype="multipart/form-data">
+    <div class="form-container">
+        <!-- Left Panel -->
+        <div class="left-panel">
+            <div class="profile-picture-container">
+                @if (Model?.ProfileImage != null && Model.ProfileImage.Length > 0)
+                {
+                    <img src="data:image/png;base64,@Convert.ToBase64String(Model.ProfileImage)" alt="Profile Picture" style="display:block;" />
+                }
+                else
+                {
+                    <img src="" alt="Profile Picture" />
+                }
+                <div class="upload-text">📷</div>
+                <input type="file" name="ProfileImage" accept="image/*" />
+            </div>
+            <label>Profile picture</label>
+
+            <label for="empId">Employee ID</label>
+            <input asp-for="empId" placeholder="Employee Id" required />
+
+            <label for="JobRole">Job Role</label>
+            <select asp-for="JobRole">
+                <option disabled selected hidden>Job Role</option>
+                <option>Software Engineer</option>
+                <option>QA Engineer</option>
+                <option>HR Manager</option>
+                <option>Admin</option>
+            </select>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="right-panel">
+            <!-- Basic Info -->
+            <div class="form-section">
+                <h3>Basic Information</h3>
+                <div class="form-grid">
+                    <label for="Title">Title</label>
+                    <select asp-for="Title">
+                        <option disabled selected hidden>Title</option>
+                        <option>Mr.</option>
+                        <option>Ms.</option>
+                        <option>Mrs.</option>
+                        <option>Dr.</option>
+                    </select>
+
+                    <label for="Initials">Initials</label>
+                    <input asp-for="Initials" placeholder="Initials" required />
+
+                    <label for="FirstName">First Name</label>
+                    <input asp-for="FirstName" placeholder="First name" required pattern="[A-Za-z]+" title="Only letters allowed" />
+
+                    <label for="MiddleName">Middle Name</label>
+                    <input asp-for="MiddleName" placeholder="Middle name" pattern="[A-Za-z]*" title="Only letters allowed" />
+
+                    <label for="LastName">Last Name</label>
+                    <input asp-for="LastName" placeholder="Last name" required pattern="[A-Za-z]+" title="Only letters allowed" />
+
+                    <label for="PreferredName">Preferred Name</label>
+                    <input asp-for="PreferredName" placeholder="Preferred name" />
+
+                    <label for="DateOfBirth">Date of Birth</label>
+                    <input asp-for="DateOfBirth" type="date" id="DateOfBirth" name="DateOfBirth"
+                           max="@maxDateOfBirth" required />
+                    <!-- Removed the error span as we'll use alert instead -->
+
+                    <label for="Gender">Gender</label>
+                    <select asp-for="Gender">
+                        <option disabled selected hidden>Gender</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+                    </select>
+
+                    <label for="MaritalStatus">Marital Status</label>
+                    <select asp-for="MaritalStatus">
+                        <option disabled selected hidden>Marital status</option>
+                        <option>Single</option>
+                        <option>Married</option>
+                    </select>
+
+                    <label for="Race">Race</label>
+                    <select asp-for="Race">
+                        <option disabled selected hidden>Race</option>
+                        <option>Asian</option>
+                        <option>Black</option>
+                        <option>White</option>
+                        <option>Mixed</option>
+                        <option>Other</option>
+                    </select>
+
+                    <label for="BloodGroup">Blood Group</label>
+                    <select asp-for="BloodGroup">
+                        <option disabled selected hidden>Blood Group</option>
+                        <option>A+</option>
+                        <option>A-</option>
+                        <option>B+</option>
+                        <option>B-</option>
+                        <option>O+</option>
+                        <option>O-</option>
+                        <option>AB+</option>
+                        <option>AB-</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Identification -->
+            <div class="form-section">
+                <h3>Identification Information</h3>
+                <div class="form-grid">
+                    <label for="NICNumber">NIC Number</label>
+                    <input asp-for="NICNumber" placeholder="NIC Number" required />
+
+                    <label for="PassportNumber">Passport Number</label>
+                    <input asp-for="PassportNumber" placeholder="Passport Number" />
+
+                    <label for="PassportExpiryDate">Passport Expiry Date</label>
+                    <input asp-for="PassportExpiryDate" type="date" />
+                </div>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="form-section">
+                <h3>Contact Information</h3>
+                <div class="form-grid">
+                    <label for="Street1">Street Address 1</label>
+                    <input asp-for="Street1" placeholder="Street 1" />
+
+                    <label for="Street2">Street Address 2</label>
+                    <input asp-for="Street2" placeholder="Street 2" />
+
+                    <label for="City">City</label>
+                    <input asp-for="City" placeholder="City" />
+
+                    <label for="ZIPCode">ZIP Code</label>
+                    <input asp-for="ZIPCode" placeholder="ZIP Code" />
+
+                    <label for="State">State/Province</label>
+                    <input asp-for="State" placeholder="State" />
+
+                    <label for="Country">Country</label>
+                    <select asp-for="Country">
+                        <option disabled selected hidden>Country</option>
+                        <option>Sri Lanka</option>
+                        <option>India</option>
+                        <option>USA</option>
+                        <option>UK</option>
+                        <option>Australia</option>
+                    </select>
+
+                    <label for="MobileNumber">Mobile Number</label>
+                    <input asp-for="MobileNumber" placeholder="Mobile number" required />
+
+                    <label for="LandLine">Land Line</label>
+                    <input asp-for="LandLine" placeholder="Land Line" />
+
+                    <label for="PersonalEmail">Personal Email</label>
+                    <input asp-for="PersonalEmail" placeholder="Personal Email" type="email" required />
+                </div>
+            </div>
+
+            <button type="submit">Save</button>
+        </div>
+    </div>
+</form>
+
+<script>
+    document.querySelector('input[type="file"]').addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (evt) {
+                const img = document.querySelector('.profile-picture-container img');
+                img.src = evt.target.result;
+                img.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const dobInput = document.getElementById("DateOfBirth");
+        const form = document.querySelector('form');
+
+        function validateDOB() {
+            const dobValue = dobInput.value;
+            if (!dobValue) {
+                alert("Date of Birth is required.");
+                return false;
+            }
+
+            const dob = new Date(dobValue);
+            const today = new Date();
+            const cutoffDate = new Date(today.getFullYear() - 16, today.getMonth(), today.getDate());
+
+            if (dob > cutoffDate) {
+                alert("Employee must be at least 16 years old.");
+                dobInput.setCustomValidity("Invalid DOB");
+                return false;
+            } else {
+                dobInput.setCustomValidity("");
+                return true;
+            }
+        }
+
+        // Validate on blur and submit
+        dobInput.addEventListener('blur', validateDOB);
+        form.addEventListener('submit', function (e) {
+            if (!validateDOB()) {
+                e.preventDefault();
+            }
+        });
+    });
+</script>

@@ -283,6 +283,14 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item menu-open">
+                            <a href="@Url.Action("CheckinCheckout", "Home")" class="nav-link active">
+                                <i class="nav-icon bi bi-speedometer"></i>
+                                <p>
+                                    Check In Check Out
+                                </p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon bi bi-speedometer"></i>
@@ -293,21 +301,27 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="@Url.Action("newEmployee", "Home")" class="nav-link active">
+                                    <a href="@Url.Action("newEmployee", "Employee")" class="nav-link active">
                                         <i class="nav-icon bi bi-circle"></i>
                                         <p>Add new Employee</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="@Url.Action("viewEmployee", "Home")" class="nav-link">
+                                    <a href="@Url.Action("ViewEmployee", "Employee")" class="nav-link">
                                         <i class="nav-icon bi bi-circle"></i>
                                         <p>View Employee</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="./index3.html" class="nav-link">
+                                    <a href="@Url.Action("AddNotice", "Notice")" class="nav-link">
                                         <i class="nav-icon bi bi-circle"></i>
-                                        <p>Dashboard v3</p>
+                                        <p>Add Notice</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("AddAnnouncement", "Announcement")" class="nav-link">
+                                        <i class="nav-icon bi bi-circle"></i>
+                                        <p>Add Announcements</p>
                                     </a>
                                 </li>
                             </ul>
